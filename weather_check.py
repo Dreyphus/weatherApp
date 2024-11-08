@@ -37,9 +37,6 @@ def find_city(long, lat):
 def get_today_temperature(long, lat, date):
     
     city = Point(long, lat)
-    print('PRINTING HERE')
-    print(long)
-    print(lat)
     data = Daily(city, date, date)
     data = data.fetch()
 
@@ -54,7 +51,12 @@ def get_today_temperature(long, lat, date):
         #return None
 
 # pull historical data and print it
-def get_historical_temperatures():
+def get_historical_temperatures(long, lat, date):
+    #generate dates for the last 20 years
+    city = Point(long, lat)
+    years_back = 20
+    historical_dates = [date - timedelta(days=365 * i) for i in range(0, years_back + 1)]
+    
     historical_data = []
     
     for date in historical_dates:
@@ -65,7 +67,7 @@ def get_historical_temperatures():
             temp = data['tavg'].iloc[0]
             historical_data.append((date.date(), temp))
         else:
-            return None
+            historical_data.append((date.date(), 'No data'))
             #print(f"No data available for {date.date()}")
     
     return historical_data
